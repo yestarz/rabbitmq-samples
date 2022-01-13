@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 /**
- * fanout 交换机会将到达交换机的所有消息路由到与他绑定的所有队列上面来
+ * fanout 交换机会将到达交换机的所有消息路由到与他绑定的所有队列上面来，这时RoutingKey就不用了
  */
 @Configuration
 public class FanoutConfig {

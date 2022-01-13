@@ -19,6 +19,8 @@ class PublisherApplicationTests {
 
     @Test
     void contextLoads() {
+        // 1. 交换机名字
+        // 2. RoutingKey的名字，也是队列的名字
         rabbitTemplate.convertAndSend(RabbitConfig.DIRECT_EXCHANGE_NAME, RabbitConfig.DIRECT_QUEUE_NAME, "这条消息发给队列1");
         rabbitTemplate.convertAndSend(RabbitConfig.DIRECT_EXCHANGE_NAME, RabbitConfig.DIRECT_QUEUE_NAME2, "这条消息发给队列2");
     }
@@ -31,6 +33,7 @@ class PublisherApplicationTests {
     @Test
     void test02() {
         rabbitTemplate.convertAndSend(TopicConfig.TOPIC_EXCHANGE_NAME, "huawei.phone.news", "华为手机新闻");
+       // rabbitTemplate.convertAndSend(TopicConfig.TOPIC_EXCHANGE_NAME, "xiaomi.phone.news", "小米手机新闻");
     }
 
     @Test

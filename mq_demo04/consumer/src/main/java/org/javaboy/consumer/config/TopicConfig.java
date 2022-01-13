@@ -21,6 +21,7 @@ public class TopicConfig {
     public static final String XIAOMI_QUEUE_NAME = "xiaomi_queue_name";
     public static final String HUAWEI_QUEUE_NAME = "huawei_queue_name";
     public static final String PHONE_QUEUE_NAME = "phone_queue_name";
+
     public static final String TOPIC_EXCHANGE_NAME = "topic_queue_name";
 
     @Bean
@@ -52,14 +53,14 @@ public class TopicConfig {
     Binding huaweiBinding() {
         return BindingBuilder.bind(huaweiQueue())
                 .to(topicExchange())
-                //这里的 # 是一个通配符，表示将来消息的 routing_key 只要是以 xiaomi 开头，都将被路由到 xiaomiQueue
+                //这里的 # 是一个通配符，表示将来消息的 routing_key 只要是以 huawei 开头，都将被路由到 huaweiQueue
                 .with("huawei.#");
     }
     @Bean
     Binding phoneBinding() {
         return BindingBuilder.bind(phoneQueue())
                 .to(topicExchange())
-                //这里的 # 是一个通配符，表示将来消息的 routing_key 只要是以 xiaomi 开头，都将被路由到 xiaomiQueue
+                //这里的 # 是一个通配符，表示将来消息的 routing_key 只要是包含了phone，都将被路由到 phoneQueue
                 .with("#.phone.#");
     }
 }

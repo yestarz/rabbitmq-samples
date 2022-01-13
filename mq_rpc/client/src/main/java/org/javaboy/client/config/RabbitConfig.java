@@ -21,8 +21,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
+    // 消息发送的队列的名字
     public static final String RPC_MSG_QUEUE = "rpc_msg_queue";
+    // 消息接收的队列的名字
     public static final String RPC_REPLY_MSG_QUEUE = "rpc_reply_msg_queue";
+    // 交换机名字
     public static final String RPC_EXCHANGE = "rpc_exchange";
 
     @Bean
@@ -57,7 +60,9 @@ public class RabbitConfig {
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        // 响应的队列名字
         rabbitTemplate.setReplyAddress(RPC_REPLY_MSG_QUEUE);
+        // 响应的超时时间
         rabbitTemplate.setReplyTimeout(6000);
         return rabbitTemplate;
     }

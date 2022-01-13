@@ -25,6 +25,7 @@ public class RabbitConfig {
 
     public static final String DIRECT_QUEUE_NAME = "direct_queue_name";
     public static final String DIRECT_QUEUE_NAME2 = "direct_queue_name2";
+
     public static final String DIRECT_EXCHANGE_NAME = "direct_exchange_name";
 
     @Bean
@@ -44,7 +45,7 @@ public class RabbitConfig {
     @Bean
     DirectExchange directExchange() {
         //1. 交换机的名称
-        //2。交换机是否持久化
+        //2。交换机是否持久化.交换机本身是否要持久化
         //3. 如果没有与之绑定的队列，是否删除交换机
         return new DirectExchange(DIRECT_EXCHANGE_NAME, true, false);
     }

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     public static final String RPC_MSG_QUEUE = "rpc_msg_queue";
     public static final String RPC_REPLY_MSG_QUEUE = "rpc_reply_msg_queue";
+
     public static final String RPC_EXCHANGE = "rpc_exchange";
 
     @Bean
