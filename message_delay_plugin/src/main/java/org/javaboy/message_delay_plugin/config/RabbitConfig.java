@@ -21,8 +21,8 @@ import java.util.Map;
  */
 @Configuration
 public class RabbitConfig {
-    public static final String DELAY_MSG_QUEUE_NAME = "delay_msg_queue_name";
-    public static final String DELAY_MSG_EXCHANGE_NAME = "delay_msg_exchange_name";
+    public static final String DELAY_MSG_QUEUE_NAME = "plugin_delay_msg_queue_name";
+    public static final String DELAY_MSG_EXCHANGE_NAME = "plugin_delay_msg_exchange_name";
 
     @Bean
     Queue delayQueue() {
@@ -32,8 +32,9 @@ public class RabbitConfig {
     @Bean
     CustomExchange customExchange() {
         Map<String, Object> args = new HashMap<>();
-        //指定交换机的类型
+        //指定交换机的类型：直连交换机
         args.put("x-delayed-type", "direct");
+        // 第二个参数是固定的，就是x-delayed-message
         return new CustomExchange(DELAY_MSG_EXCHANGE_NAME, "x-delayed-message", true, false, args);
     }
 

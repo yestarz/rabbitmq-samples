@@ -21,10 +21,15 @@ import java.util.Map;
  */
 @Configuration
 public class RabbitConfig {
-    public static final String JAVABOY_QUEUE_NAME = "javaboy_queue_name";
-    public static final String JAVABOY_EXCHANGE_NAME = "javaboy_exchange_name";
-    public static final String DELAY_EXCHANGE_NAME = "delay_exchange_name";
-    public static final String DELAY_QUEUE_NAME = "delay_queue_name";
+
+    public static final String JAVABOY_QUEUE_NAME = "yx_javaboy_queue_name";
+    // 消息往这里发
+    public static final String JAVABOY_EXCHANGE_NAME = "yx_javaboy_exchange_name";
+
+    // 死信交换机的名字
+    public static final String DELAY_EXCHANGE_NAME = "yx_delay_exchange_name";
+    // 死信队列名字
+    public static final String DELAY_QUEUE_NAME = "yx_delay_queue_name";
 
     @Bean
     Binding msgBinding() {
@@ -41,11 +46,13 @@ public class RabbitConfig {
     @Bean
     Queue msgQueue() {
         Map<String, Object> args = new HashMap<>();
-        args.put("x-message-ttl", 10000);
+        args.put("x-message-ttl", 10000);// 过期时间，10s后会发送到死信交换机中
         args.put("x-dead-letter-exchange", DELAY_EXCHANGE_NAME);
         args.put("x-dead-letter-routing-key", DELAY_QUEUE_NAME);
         return new Queue(JAVABOY_QUEUE_NAME, true, false, false, args);
     }
+
+    // ----------------------------------------- 死信交换机 ----------------------------------
 
     @Bean
     Binding dlxBinding() {

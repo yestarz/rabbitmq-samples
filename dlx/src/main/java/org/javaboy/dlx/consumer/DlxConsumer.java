@@ -15,9 +15,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DlxConsumer {
+    // 这里监听的死信队列
     @RabbitListener(queues = RabbitDlxConfig.DLX_QUEUE_NAME)
     public void handle(String msg) {
-        System.out.println("msg = " + msg);
+        System.out.println("消费死信队列里的消息：msg = " + msg);
     }
 
 }

@@ -21,6 +21,6 @@ public class MsgReceiver {
 
     @RabbitListener(queues = RabbitConfig.DELAY_QUEUE_NAME)
     public void handleMsg(String msg) {
-        logger.info("handleMsg,{}", msg);
+        logger.info("处理死信队列的消息：handleMsg,{}", msg);
     }
 }

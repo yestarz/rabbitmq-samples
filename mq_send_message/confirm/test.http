@@ -1,0 +1,9 @@
+GET http://localhost:8080/send
+
+###
+
+GET http://localhost:8080/sendError
+
+###
+
+GET http://localhost:8080/sendError2

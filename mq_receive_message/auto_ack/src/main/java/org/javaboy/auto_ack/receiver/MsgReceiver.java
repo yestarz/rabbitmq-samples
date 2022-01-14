@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 public class MsgReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(MsgReceiver.class);
+
     @RabbitListener(queues = RabbitConfig.JAVABOY_QUEUE_NAME)
     public void handleMsg(String msg) {
         logger.info("msg:{}", msg);

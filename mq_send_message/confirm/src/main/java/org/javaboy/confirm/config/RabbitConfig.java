@@ -22,8 +22,8 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 public class RabbitConfig implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnsCallback {
-    public static final String JAVABOY_EXCHANGE_NAME = "javaboy_exchange_name";
-    public static final String JAVABOY_QUEUE_NAME = "javaboy_queue_name";
+    public static final String JAVABOY_EXCHANGE_NAME = "ConfirmCallback_javaboy_exchange_name";
+    public static final String JAVABOY_QUEUE_NAME = "ConfirmCallback_javaboy_queue_name";
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitConfig.class);
 
@@ -55,8 +55,9 @@ public class RabbitConfig implements RabbitTemplate.ConfirmCallback, RabbitTempl
 
     /**
      * 消息到达交换机的回调
+     *
      * @param correlationData
-     * @param ack
+     * @param ack             如果为true代表成功到达交换机
      * @param cause
      */
     @Override
@@ -64,13 +65,14 @@ public class RabbitConfig implements RabbitTemplate.ConfirmCallback, RabbitTempl
         if (ack) {
             //消息成功到达交换机
             logger.info("{} 消息成功到达交换机", correlationData.getId());
-        }else{
+        } else {
             logger.error("{} 消息未到达交换机，{}", correlationData.getId(), cause);
         }
     }
 
     /**
      * 消息没有到达队列的回调
+     *
      * @param returned
      */
     @Override

@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
-    public static final String JAVABOY_QUEUE_NAME = "javaboy_queue_name";
-    public static final String JAVABOY_EXCHANGE_NAME = "javaboy_exchange_name";
+    public static final String JAVABOY_QUEUE_NAME = "auto_ack_javaboy_queue_name";
+    public static final String JAVABOY_EXCHANGE_NAME = "auto_ack_javaboy_exchange_name";
 
     @Bean
     Binding msgBinding() {

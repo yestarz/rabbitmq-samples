@@ -23,6 +23,9 @@ public class RabbitConfig {
 
     @Bean
     Queue messageDelayQueue() {
+        // 排他性exclusive：如果设置为true，那么这个消息队列只有创建这个队列的connection才能访问，其他的connection不能访问这个消息队列，
+        // 如果试图在其他连接中访问排他性的队列，那么系统会报一个资源被锁定的错误，
+        // 对于排他性队列而言，当连接断开的时候，这个队列将会被系统自动删除，无论这个队列是否声明为持久化队列
         return new Queue(JAVABOY_MESSSAGE_DELAY_QUEUE_NAME, true, false, false);
     }
 

@@ -20,11 +20,33 @@ import java.util.UUID;
  */
 @RestController
 public class HelloController {
+
     @Autowired
     RabbitTemplate rabbitTemplate;
 
     @GetMapping("/send")
     public void hello() {
-        rabbitTemplate.convertAndSend(RabbitConfig.JAVABOY_EXCHANGE_NAME, RabbitConfig.JAVABOY_QUEUE_NAME, "hello javaboy!",new CorrelationData(UUID.randomUUID().toString()));
+        rabbitTemplate.convertAndSend(RabbitConfig.JAVABOY_EXCHANGE_NAME,
+                RabbitConfig.JAVABOY_QUEUE_NAME,
+                "hello javaboy2!",
+                new CorrelationData(UUID.randomUUID().toString()));
+    }
+
+    @GetMapping("/sendError")
+    public void sendError() {
+        // 这个消息将会不能成功到达交换机，因为这个交换机不存在
+        rabbitTemplate.convertAndSend("RabbitConfig.JAVABOY_EXCHANGE_NAME",
+                RabbitConfig.JAVABOY_QUEUE_NAME,
+                "hello javaboy2!",
+                new CorrelationData(UUID.randomUUID().toString()));
+    }
+
+    @GetMapping("/sendError2")
+    public void sendError2() {
+        // 这个消息将无法到达队列，因为不存在routingKey对应的队列
+        rabbitTemplate.convertAndSend(RabbitConfig.JAVABOY_EXCHANGE_NAME,
+                RabbitConfig.JAVABOY_QUEUE_NAME + "1111111",
+                "hello javaboy2!",
+                new CorrelationData(UUID.randomUUID().toString()));
     }
 }
