@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.GetResponse;
 import org.javaboy.manual.config.RabbitConfig;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,5 +41,14 @@ class ManualApplicationTests {
 			}
 		}
     }
+
+    @Test
+	void sendTooManyMsg(){
+		for (int i = 0; i < 100; i++) {
+			CorrelationData correlationData = new CorrelationData();
+			correlationData.setId(i + "");
+			rabbitTemplate.convertAndSend(RabbitConfig.JAVABOY_EXCHANGE_NAME, RabbitConfig.JAVABOY_QUEUE_NAME, "哈哈哈哈" + i, correlationData);
+		}
+	}
 
 }

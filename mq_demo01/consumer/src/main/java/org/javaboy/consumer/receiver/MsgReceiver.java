@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 /**
  * 这是一个消息消费者
  */
-@Component
+//@Component
 public class MsgReceiver {
 
     /**
