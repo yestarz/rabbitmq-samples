@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author 江南一点雨
@@ -19,10 +20,12 @@ import java.io.IOException;
  * @GitHub https://github.com/lenve
  * @Gitee https://gitee.com/lenve
  */
-//@Configuration
+@Configuration
 public class MsgReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(MsgReceiver.class);
+
+    private AtomicInteger errorCount = new AtomicInteger(1);
 
     @RabbitListener(queues = RabbitConfig.JAVABOY_QUEUE_NAME)
     public void handleMsg(Message message, Channel channel) {
@@ -32,15 +35,20 @@ public class MsgReceiver {
             //开始消息的消费
             byte[] body = message.getBody();
             String s = new String(body);
-            logger.info("handleMsg,{}", s);
+            logger.info("handleMsg,{},deliveryTag:{}", s,deliveryTag);
             int i = 1 / 0;
             //消费完成后，手动ack
-            //第一个参数是消息的标记，第二个参数如果为 false，表示仅仅确认当前消息，如果为 true，表示之前所有的消息都确认消费成功
+            //第一个参数是消息的标记，第二个参数（是否批处理）如果为 false，表示仅仅确认当前消息，如果为 true，表示之前所有的消息都确认消费成功
             channel.basicAck(deliveryTag,false);
         } catch (Exception e) {
-            //手动 nack，告诉 mq 这条消息消费失败
+            //手动 nack，告诉 mq 这条消息消费失败。第二个参数是否批量处理，第三个参数(requeue)，是否重新进入到队列中
             try {
-                channel.basicNack(deliveryTag,false,true);
+                // 如果最后一个参数设置为false，就是不让他重新入队列(这条消息消费过了，但是消费失败了)，会进入到死信队列中
+
+                int errorCount = this.errorCount.getAndIncrement();
+                logger.info("失败第{}次", errorCount);
+                // 失败次数小于10，则重新入队，否则进入到死信队列中
+                channel.basicNack(deliveryTag,false,errorCount <= 10);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

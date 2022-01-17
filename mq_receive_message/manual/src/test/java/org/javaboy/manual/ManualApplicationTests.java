@@ -16,11 +16,16 @@ class ManualApplicationTests {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    @Test
+	/**
+	 * 拉模式的手动确认
+	 */
+	@Test
     void contextLoads() {
         long deliveryTag = 0;
+        // 参数为是否事务模式
         Channel channel = rabbitTemplate.getConnectionFactory().createConnection().createChannel(false);
         try {
+        	// 第二个参数为是否autoAck
             GetResponse getResponse = channel.basicGet(RabbitConfig.JAVABOY_QUEUE_NAME, false);
             deliveryTag = getResponse.getEnvelope().getDeliveryTag();
 			String s = new String(getResponse.getBody());
